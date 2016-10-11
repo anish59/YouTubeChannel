@@ -28,7 +28,19 @@ public class YouTubeResponse {
     public PageInfo pageInfo;
     @SerializedName("items")
     @Expose
-    public List<Item> items = new ArrayList<Item>();
+    public List<Item> items = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "YouTubeResponse{" +
+                "kind='" + kind + '\'' +
+                ", etag='" + etag + '\'' +
+                ", nextPageToken='" + nextPageToken + '\'' +
+                ", regionCode='" + regionCode + '\'' +
+                ", pageInfo=" + pageInfo +
+                ", items=" + items +
+                '}';
+    }
 
     /**
      *

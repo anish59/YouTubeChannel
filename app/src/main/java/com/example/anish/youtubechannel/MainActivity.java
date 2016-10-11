@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.anish.youtubechannel.Adapters.CustomRecyclerAdapter;
 import com.example.anish.youtubechannel.Adapters.YouTubeRecylerAdapter;
 
 import com.example.anish.youtubechannel.Model.Item;
@@ -20,6 +21,7 @@ import com.example.anish.youtubechannel.Rest.RecyclerTouchListener;
 import com.example.anish.youtubechannel.databinding.ActivityMainBinding;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.iwgang.familiarrecyclerview.FamiliarRecyclerView;
@@ -45,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     FamiliarRecyclerView recyclerView;
     String res;
     View v;
+   // private YouTubeRecylerAdapter youTubeRecylerAdapter;
+   private CustomRecyclerAdapter customRecyclerAdapter ;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +92,12 @@ public class MainActivity extends AppCompatActivity {
 }*/
 // 801917163578-ilc6rs51376ppv8vte10g392qqmbfirt.apps.googleusercontent.com
 
-        recyclerView = (FamiliarRecyclerView) activityMainBinding.list;
+        recyclerView =activityMainBinding.list;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        items = new ArrayList<>();
+        customRecyclerAdapter = new CustomRecyclerAdapter(items, R.layout.custom_youtuberow, MainActivity.this);
+        recyclerView.setAdapter(customRecyclerAdapter);
 
         prepareData(null);
 
@@ -102,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }));
-         v=getLayoutInflater().inflate(R.layout.loadmore,null);
+
+        v = getLayoutInflater().inflate(R.layout.loadmore, null);
         v.setVisibility(View.GONE);
         recyclerView.addFooterView(v);
 
@@ -115,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onScrolledToBottom() {
-               if(res!=null) {
-                   v.setVisibility(View.VISIBLE);
-                   prepareData(res);
-               }
+                if (res != null) {
+                    v.setVisibility(View.VISIBLE);
+                    prepareData(res);
+                }
             }
         });
     }
@@ -128,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         //ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
         Call<YouTubeResponse> call;
         if (nextToken != null) {
-            call = apiService.getNextPage("UC6ZkHcW5QQubZ-Q6XYINE3Q", "snippet,id", "date", 10,nextToken, API_KEY);
+            call = apiService.getNextPage("UC6ZkHcW5QQubZ-Q6XYINE3Q", "snippet,id", "date", 10, nextToken, API_KEY);
         } else {
             call = apiService.getChannelResult1("UC6ZkHcW5QQubZ-Q6XYINE3Q", "snippet,id", "date", 10, API_KEY);
         }
@@ -139,13 +151,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Log.e("## Items:", response.code() + "");
-                items = response.body().getItems();
-                res=response.body().nextPageToken;
-               /* //int statusCode = response.code();
-                List<Item> items =response.body().getItems();*/
-                Log.e(TAG, "onResponse: " + items.get(3).getId().getVideoId());
-                recyclerView.setAdapter(new YouTubeRecylerAdapter(items, R.layout.youtuberow, MainActivity.this));
+                Log.d(TAG, "onResponse: "+response.body().getNextPageToken());
+                res = response.body().getNextPageToken();
+                Log.e("Res-->", "onResponse: "+res);
+                for (int i = 0; i < response.body().getItems().size(); i++) {
+                    items.add(response.body().getItems().get(i));
 
+                }
+                //res = response.body().nextPageToken;
+                customRecyclerAdapter.notifyDataSetChanged();
 
             }
 
@@ -160,3 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+ /* //int statusCode = response.code();
+                List<Item> items =response.body().getItems();*/
+// Log.e(TAG, "onResponse: " + items.get(3).getId().getVideoId());
+// recyclerView.setAdapter(new YouTubeRecylerAdapter(items, R.layout.youtuberow, MainActivity.this));
