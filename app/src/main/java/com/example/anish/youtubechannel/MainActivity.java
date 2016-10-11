@@ -131,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
                     v.setVisibility(View.VISIBLE);
                     prepareData(res);
                 }
+                else
+                {
+                    v.setVisibility(View.GONE);
+                }
+
             }
         });
     }

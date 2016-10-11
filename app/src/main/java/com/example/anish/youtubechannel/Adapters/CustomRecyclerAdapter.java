@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.anish.youtubechannel.KeyClass;
-import com.example.anish.youtubechannel.MainActivity;
 import com.example.anish.youtubechannel.Model.Item;
 import com.example.anish.youtubechannel.R;
 import com.example.anish.youtubechannel.databinding.CustomYoutuberowBinding;
-import com.example.anish.youtubechannel.databinding.YoutuberowBinding;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
-
 import java.util.List;
 
 /**
@@ -70,7 +62,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
 
         protected RelativeLayout relativeLayoutOverYouTubeThumbnailView;
         ImageView imageView;
-        protected CardView playButton;
+        //protected CardView playButton;
         TextView title;
 
         public VideoInfoHolder(View itemView) {
@@ -79,7 +71,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<CustomRecyclerAd
             title = (TextView) itemView.findViewById(R.id.video_title);
             youTubeThumbnailView = (YouTubeThumbnailView) itemView.findViewById(R.id.youtube_thumbnail);
 */
-            playButton = customYoutuberowBinding.play;
+          //  playButton = customYoutuberowBinding.play;
             title = customYoutuberowBinding.title;
             imageView = customYoutuberowBinding.thumbnail;
         }
